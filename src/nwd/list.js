@@ -15,6 +15,6 @@ export const getList = async (pathFile) => {
       const sortType = sortName.sort((a, b) => (a.Type).localeCompare(b.Type));
       console.table(sortType);
     } catch (error) {
-        console.log(error.message);
+        console.log('Operation failed!');
     } 
 };

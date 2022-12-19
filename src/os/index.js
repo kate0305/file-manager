@@ -15,7 +15,7 @@ export const handleOS = async (command) => {
       break;
    
     case '--homedir':
-      await getHomeDir();
+      console.log(await getHomeDir());
       break;
    
     case '--username':

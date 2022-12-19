@@ -3,7 +3,6 @@ import { sayWelcome } from './hello.js';
 import { getList } from './nwd/list.js';
 import { cdDir } from './nwd/cd.js';
 import { getUpDir } from './nwd/up.js';
-import { getHomeDir } from './os/homedir.js';
 import { handleOS } from './os/index.js';
 import { validateCommand } from './validateCommand.js';
 import { cwd, exit, stdin, stdout } from 'node:process';
@@ -13,14 +12,15 @@ import { calculateHash } from './hash/hash.js';
 import { compressFile } from './zip/compress.js';
 import { decompressFile } from './zip/decompress.js';
 import { handleFS } from './fs/index.js';
+import { currentDir } from './curDir.js';
 
 const rl = createInterface({ input: stdin, output: stdout });
 const name = await sayWelcome();
 if (name) {
   console.log(`Welcome to the File Manager, ${name}!`);
-}
+};
 
-await getHomeDir();
+console.log(`You are currently in ${currentDir.getDir()}`);
 
 rl.on('line', async (text) => {
   try {
@@ -67,11 +67,10 @@ rl.on('line', async (text) => {
   } catch (error) {
     console.log('main index');
   } finally {
-    console.log(cwd());//изменить - если не меняли директорию - homedir
+    console.log(`You are currently in ${currentDir.getDir()}`);
   }
 });
 
-    //остановка процесса нажатием CTRL + C
 rl.on('SIGINT', () => {
   console.log(`Thank you for using File Manager, ${name}, goodbye!`);
   exit();

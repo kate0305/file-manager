@@ -1,0 +1,78 @@
+import { createInterface } from 'node:readline/promises';
+import { sayWelcome } from './hello.js';
+import { getList } from './nwd/list.js';
+import { cdDir } from './nwd/cd.js';
+import { getUpDir } from './nwd/up.js';
+import { getHomeDir } from './os/homedir.js';
+import { handleOS } from './os/index.js';
+import { validateCommand } from './validateCommand.js';
+import { cwd, exit, stdin, stdout } from 'node:process';
+import { getPath } from './validateArgs.js';
+import { parseArgs } from './parseArgs.js';
+import { calculateHash } from './hash/hash.js';
+import { compressFile } from './zip/compress.js';
+import { decompressFile } from './zip/decompress.js';
+import { handleFS } from './fs/index.js';
+
+const rl = createInterface({ input: stdin, output: stdout });
+const name = await sayWelcome();
+if (name) {
+  console.log(`Welcome to the File Manager, ${name}!`);
+}
+
+await getHomeDir();
+
+rl.on('line', async (text) => {
+  try {
+    const command = await validateCommand(text);
+    const paths = await getPath(text);
+    const { args } = parseArgs(text);
+    switch (command) {
+      case 'up':
+        await getUpDir();
+        break;
+
+      case 'cd':
+        await cdDir(paths[0]);
+        break;
+
+      case 'ls':
+        await getList(cwd());
+        break;
+    
+      case 'os':
+        await handleOS(args[0]);
+        break;
+    
+      case 'hash':
+        await calculateHash(paths[0]);
+        break;
+
+      case 'compress':
+        await compressFile(paths[0], paths[1]);
+        break;
+
+      case 'decompress':
+        await decompressFile(paths[0], paths[1]);
+        break;
+
+      case '.exit':
+        console.log(`Thank you for using File Manager, ${name}, goodbye!`);
+        exit();
+    
+      default:
+        handleFS(command, text);
+        break;
+    }
+  } catch (error) {
+    console.log('main index');
+  } finally {
+    console.log(cwd());//изменить - если не меняли директорию - homedir
+  }
+});
+
+    //остановка процесса нажатием CTRL + C
+rl.on('SIGINT', () => {
+  console.log(`Thank you for using File Manager, ${name}, goodbye!`);
+  exit();
+});

@@ -5,6 +5,6 @@ export const createFile = async (pathFile) => {
       await open(pathFile, 'wx+');
       console.log('File created!');
     } catch (error) {
-        console.log(error.message);
+        console.log('Operation failed');
     };
 };

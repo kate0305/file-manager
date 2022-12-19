@@ -4,8 +4,10 @@ export const copyFile = async (oldPath, newPath) => {
     try {
       const readStream = createReadStream(oldPath);
       const writeStream = createWriteStream(newPath);
-      readStream.pipe(writeStream);
+      readStream.on('error', () => console.log('Operation failed'))
+                .pipe(writeStream)
+                .on('error', () => console.log('Operation failed'));
     } catch (error) {
-        console.log(error.message);
+        console.log('Operation failed');
     };
 };

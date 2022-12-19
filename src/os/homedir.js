@@ -1,5 +1,5 @@
 import { homedir } from 'node:os';
 
-export const getHomeDir = () => {
+export const getHomeDir = async () => {
   console.log(homedir());
 };

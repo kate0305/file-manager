@@ -1,6 +1,6 @@
 import { cpus } from 'node:os';
 
-export const getCpus = () => {
+export const getCpus = async () => {
   const getCpus = cpus();
   console.log(`Overall amount of CPUs are ${getCpus.length}`);
   getCpus.map(({ model, speed }, index) => {

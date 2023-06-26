@@ -5,7 +5,7 @@ import { cdDir } from './nwd/cd.js';
 import { getUpDir } from './nwd/up.js';
 import { handleOS } from './os/index.js';
 import { validateCommand } from './validateCommand.js';
-import { cwd, exit, stdin, stdout } from 'node:process';
+import { chdir, cwd, exit, stdin, stdout } from 'node:process';
 import { getPath } from './validateArgs.js';
 import { parseArgs } from './parseArgs.js';
 import { calculateHash } from './hash/hash.js';
@@ -13,12 +13,14 @@ import { compressFile } from './zip/compress.js';
 import { decompressFile } from './zip/decompress.js';
 import { handleFS } from './fs/index.js';
 import { currentDir } from './curDir.js';
-
+import { homedir } from 'node:os';
 const rl = createInterface({ input: stdin, output: stdout });
 const name = await sayWelcome();
 if (name) {
   console.log(`Welcome to the File Manager, ${name}!`);
 };
+
+chdir(homedir());
 
 console.log(`You are currently in ${currentDir.getDir()}`);
 

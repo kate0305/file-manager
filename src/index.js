@@ -25,7 +25,7 @@ console.log(`You are currently in ${currentDir.getDir()}`);
 rl.on('line', async (text) => {
   try {
     const command = await validateCommand(text);
-    const paths = await getPath(text);
+    let paths;
     const { args } = parseArgs(text);
     switch (command) {
       case 'up':
@@ -33,6 +33,7 @@ rl.on('line', async (text) => {
         break;
 
       case 'cd':
+        paths = await getPath(text);
         await cdDir(paths[0]);
         break;
 
@@ -45,14 +46,17 @@ rl.on('line', async (text) => {
         break;
     
       case 'hash':
+        paths = await getPath(text);
         await calculateHash(paths[0]);
         break;
 
       case 'compress':
+        paths = await getPath(text);
         await compressFile(paths[0], paths[1]);
         break;
 
       case 'decompress':
+        paths = await getPath(text);
         await decompressFile(paths[0], paths[1]);
         break;
 

@@ -11,6 +11,6 @@ export const getPath = async (str) => {
     });
     return paths;
   } catch (error) {
-    console.log('Invalid input');
+    console.log(error.message);
   }
 };
